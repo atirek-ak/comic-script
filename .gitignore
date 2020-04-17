@@ -130,3 +130,6 @@ dmypy.json
 
 # Mac icons file
 .DS_Store
+
+#virtualenv
+comic-script
