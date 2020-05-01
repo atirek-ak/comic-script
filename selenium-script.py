@@ -20,8 +20,8 @@ def extract_source_code(url):
 	browser = webdriver.Chrome(options=options)
 	browser.get(url)
 
-	# Wait 3 seonds for page to load
-	timeout = 5
+	# Wait 7 seonds for page to load
+	timeout = 7
 	try:
 		element = WebDriverWait(browser, timeout).until(EC.presence_of_element_located((By.ID, "containerRoot")))
 	except TimeoutException:
