@@ -45,7 +45,14 @@ def extract_image_links():
 					pass
 				else:
 					links.append(line.split('"')[1])	
-	return links			
+	return links
+
+def refine_links(links):
+	#for high quality
+	for link in links:
+		if '=s1600' in link:
+			link.replace("=s1600", "=s0")
+	return links		
 
 def main():
 	#accept link as argument
@@ -59,6 +66,7 @@ def main():
 	# print(links)
 	finish = datetime.now() - start
 	print(finish)
-	for element in links:
-		print(element)
+	links = refine_links(links)
+	# for element in links:
+		# print(element)
 main()
