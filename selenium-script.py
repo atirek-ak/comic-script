@@ -13,7 +13,6 @@ def parse_url(url):
 	return str(url)
 
 def extract_source_code(url):
-	# print("Selenium takes time upto 30 seconds or even a minute to fire up the browser. Please wait...")
 	#Create an instance of chrome
 	options = webdriver.ChromeOptions();
 	# options.add_argument('headless'); #to not open a browser window
