@@ -21,7 +21,7 @@ def extract_source_code(url):
 	browser.get(url)
 
 	# Wait 7 seconds for page to load
-	timeout = 10	
+	timeout = 7
 	try:
 		element = WebDriverWait(browser, timeout).until(EC.presence_of_element_located((By.ID, "containerRoot")))
 	except TimeoutException:
