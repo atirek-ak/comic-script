@@ -136,3 +136,6 @@ comic-script
 
 #selenium
 ghostdriver.log
+
+#testing
+*.txt
