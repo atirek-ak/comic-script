@@ -133,3 +133,6 @@ dmypy.json
 
 #virtualenv
 comic-script
+
+#selenium
+ghostdriver.log
