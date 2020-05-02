@@ -10,7 +10,13 @@ from datetime import datetime #for testing purpose
 def parse_url(url):
 	if '&readType=1' in url:
 		url = url + '&readType=1'
-	return str(url)
+	link = 	url.split('/')
+	comic = link[link.index('Comic') + 1]
+	issue = link[link.index('Comic') + 2]
+	issue = issue.split('?')[0]
+	print(comic)
+	print(issue)
+	return url, comic, issue
 
 def extract_source_code(url):
 	#Create an instance of chrome
@@ -54,12 +60,18 @@ def refine_links(links):
 			link.replace("=s1600", "=s0")
 	return links		
 
+def download_comic(comic, issue, links):
+	path = os.getcwd()
+	print(path) 
+	# os.mkdir("./" + path)
+	# print("done")	
+
 def main():
 	#accept link as argument
 	if len(sys.argv) < 2:
 		print("Enter url as argument in the command line")
 		sys.exit()
-	url = parse_url(sys.argv[1])
+	url, comic, issue = parse_url(sys.argv[1])
 	start = datetime.now()
 	extract_source_code(url) #stores source code of url in 'source.txt'
 	links = extract_image_links() #stores links of all images in links list
@@ -67,6 +79,6 @@ def main():
 	finish = datetime.now() - start
 	print(finish)
 	links = refine_links(links)
-	# for element in links:
-		# print(element)
+	download_comic(comic, issue, links)
+
 main()
