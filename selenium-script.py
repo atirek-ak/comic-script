@@ -18,7 +18,7 @@ def parse_url(url):
 	# print(issue)
 	return url, comic, issue
 
-def extract_source_code(url, comic, issue):
+def extract_source_code(url):
 	#Create an instance of chrome
 	options = webdriver.ChromeOptions();
 	# options.add_argument('headless'); #to not open a browser window
@@ -40,13 +40,8 @@ def extract_source_code(url, comic, issue):
 	soure_file.write(source_Code)
 	soure_file.flush()
 	soure_file.close()
-	links = extract_image_links() #stores links of all images in links list
-	links = refine_links(links)
-	os.remove("source.txt")
-	path = create_directory(comic, issue)
-	# path = path + "/"
-	download_comic(path, links)
 	browser.quit()
+
 
 def extract_image_links():
 	links = []
@@ -68,19 +63,22 @@ def refine_links(links):
 
 def create_directory(comic, issue):
 	cur_dir = os.getcwd()
-	final_directory = os.path.join(cur_dir, "Comics", comic, issue, "/")
+	final_directory = os.path.join(cur_dir, "Comics", comic, issue)
+	# print(final_directory)
 	if not os.path.exists(final_directory):
 		os.makedirs(final_directory)
+		# os.chmod(final_directory, 0777)
 	return final_directory	
 
 def download_comic(path, links):
+	# print(path)
 	count = 1
 	for image in links:
 			r = requests.get(image)
-			with open(path + str('%03d' % count) + ".jpg", 'wb') as f:
+			with open(path + "/" + str('%03d' % count) + ".jpg", 'wb') as f:
 				f.write(r.content)
 			# urllib.request.urlretrieve(image, path + str(count) + ".jpg")
-			print("Downloading #" + '%03d' % count)
+			print("Downloading " + '%03d' % count + ".jpg")
 			count += 1
 
 
@@ -91,8 +89,14 @@ def main():
 		sys.exit()
 	url, comic, issue = parse_url(sys.argv[1])
 	start = datetime.now()
-	extract_source_code(url, comic, issue) #stores source code of url in 'source.txt'
+	extract_source_code(url) #stores source code of url in 'source.txt'
 	finish = datetime.now() - start
 	print(finish)
+	links = extract_image_links() #stores links of all images in links list
+	links = refine_links(links)
+	os.remove("source.txt")
+	path = create_directory(comic, issue)
+	# path = path + "/"
+	download_comic(path, links)
 
 main()
