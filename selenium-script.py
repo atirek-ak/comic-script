@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
-import sys, os
+import sys, os, requests
 from datetime import datetime #for testing purpose
 
 def parse_url(url):
@@ -14,11 +14,11 @@ def parse_url(url):
 	comic = link[link.index('Comic') + 1]
 	issue = link[link.index('Comic') + 2]
 	issue = issue.split('?')[0]
-	print(comic)
-	print(issue)
+	# print(comic)
+	# print(issue)
 	return url, comic, issue
 
-def extract_source_code(url):
+def extract_source_code(url, comic, issue):
 	#Create an instance of chrome
 	options = webdriver.ChromeOptions();
 	# options.add_argument('headless'); #to not open a browser window
@@ -40,6 +40,11 @@ def extract_source_code(url):
 	soure_file.write(source_Code)
 	soure_file.flush()
 	soure_file.close()
+	links = extract_image_links() #stores links of all images in links list
+	links = refine_links(links)
+	os.remove("source.txt")
+	path = create_directory(comic, issue)
+	download_comic(path, links)
 	browser.quit()
 
 def extract_image_links():
@@ -67,6 +72,9 @@ def create_directory(comic, issue):
 		os.makedirs(final_directory)
 	return final_directory	
 
+def download_comic(path, links):
+	pass
+
 def main():
 	#accept link as argument
 	if len(sys.argv) < 2:
@@ -74,12 +82,8 @@ def main():
 		sys.exit()
 	url, comic, issue = parse_url(sys.argv[1])
 	start = datetime.now()
-	extract_source_code(url) #stores source code of url in 'source.txt'
-	links = extract_image_links() #stores links of all images in links list
-	# print(links)
+	extract_source_code(url, comic, issue) #stores source code of url in 'source.txt'
 	finish = datetime.now() - start
 	print(finish)
-	links = refine_links(links)
-	path = create_directory(comic, issue)
-	
+
 main()
