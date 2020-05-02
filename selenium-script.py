@@ -44,6 +44,7 @@ def extract_source_code(url, comic, issue):
 	links = refine_links(links)
 	os.remove("source.txt")
 	path = create_directory(comic, issue)
+	# path = path + "/"
 	download_comic(path, links)
 	browser.quit()
 
@@ -67,13 +68,21 @@ def refine_links(links):
 
 def create_directory(comic, issue):
 	cur_dir = os.getcwd()
-	final_directory = os.path.join(cur_dir, "Comics", comic, issue)
+	final_directory = os.path.join(cur_dir, "Comics", comic, issue, "/")
 	if not os.path.exists(final_directory):
 		os.makedirs(final_directory)
 	return final_directory	
 
 def download_comic(path, links):
-	pass
+	count = 1
+	for image in links:
+			r = requests.get(image)
+			with open(path + str('%03d' % count) + ".jpg", 'wb') as f:
+				f.write(r.content)
+			# urllib.request.urlretrieve(image, path + str(count) + ".jpg")
+			print("Downloading #" + '%03d' % count)
+			count += 1
+
 
 def main():
 	#accept link as argument
