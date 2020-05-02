@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 import sys, os, requests
-from datetime import datetime #for testing purpose
+# from datetime import datetime #for testing purpose
 
 def parse_url(url):
 	if '&readType=1' in url:
@@ -88,10 +88,10 @@ def main():
 		print("Enter url as argument in the command line")
 		sys.exit()
 	url, comic, issue = parse_url(sys.argv[1])
-	start = datetime.now()
+	# start = datetime.now()
 	extract_source_code(url) #stores source code of url in 'source.txt'
-	finish = datetime.now() - start
-	print(finish)
+	# finish = datetime.now() - start
+	# print(finish)
 	links = extract_image_links() #stores links of all images in links list
 	links = refine_links(links)
 	os.remove("source.txt")
