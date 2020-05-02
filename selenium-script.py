@@ -60,11 +60,12 @@ def refine_links(links):
 			link.replace("=s1600", "=s0")
 	return links		
 
-def download_comic(comic, issue, links):
-	path = os.getcwd()
-	print(path) 
-	# os.mkdir("./" + path)
-	# print("done")	
+def create_directory(comic, issue):
+	cur_dir = os.getcwd()
+	final_directory = os.path.join(cur_dir, "Comics", comic, issue)
+	if not os.path.exists(final_directory):
+		os.makedirs(final_directory)
+	return final_directory	
 
 def main():
 	#accept link as argument
@@ -79,6 +80,6 @@ def main():
 	finish = datetime.now() - start
 	print(finish)
 	links = refine_links(links)
-	download_comic(comic, issue, links)
-
+	path = create_directory(comic, issue)
+	
 main()
