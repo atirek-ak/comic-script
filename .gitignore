@@ -139,3 +139,6 @@ ghostdriver.log
 
 #testing
 *.txt
+
+#comics stored here
+Comics/
