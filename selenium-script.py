@@ -5,6 +5,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 import sys, os, requests
+from PIL import Image #convert image to pdf
+
 # from datetime import datetime #for testing purpose
 
 def parse_url(url):
@@ -64,10 +66,8 @@ def refine_links(links):
 def create_directory(comic, issue):
 	cur_dir = os.getcwd()
 	final_directory = os.path.join(cur_dir, "Comics", comic, issue)
-	# print(final_directory)
 	if not os.path.exists(final_directory):
 		os.makedirs(final_directory)
-		# os.chmod(final_directory, 0777)
 	return final_directory	
 
 def download_comic(path, links):
@@ -77,26 +77,42 @@ def download_comic(path, links):
 			r = requests.get(image)
 			with open(path + "/" + str('%03d' % count) + ".jpg", 'wb') as f:
 				f.write(r.content)
-			# urllib.request.urlretrieve(image, path + str(count) + ".jpg")
 			print("Downloading " + '%03d' % count + ".jpg")
 			count += 1
 
+def convert_to_pdf(comic, issue):
+	pdf = []
+	files = []
+	cur_dir = os.getcwd()
+	final_dir = os.path.join(cur_dir, "Comics", comic) #to store pdf
+	jpg_directory = os.path.join(cur_dir, "Comics", comic, issue) #where images are stored
+	for filename in os.listdir(jpg_directory):
+		if filename.endswith(".jpg"):
+			files.append(filename)
+	files.sort(key=str) #sort files 
+	image1 = Image.open(jpg_directory + "/" + files[0])
+	im1 = image1.convert('RGB')
+	for filename in files[1:]:	
+		image = Image.open(jpg_directory + "/" + filename)
+		im = image.convert('RGB')
+		pdf.append(im)
+	name = comic + "-" + issue + ".pdf" #name of pdf
+	im1.save(final_dir + "/" + name, save_all=True, append_images=pdf)	
+	print("Comic converted to pdf")
 
 def main():
 	#accept link as argument
 	if len(sys.argv) < 2:
 		print("Enter url as argument in the command line")
 		sys.exit()
+	pdf = input('Convert comic from images to .pdf file(y/n): ')	
 	url, comic, issue = parse_url(sys.argv[1])
-	# start = datetime.now()
 	extract_source_code(url) #stores source code of url in 'source.txt'
-	# finish = datetime.now() - start
-	# print(finish)
 	links = extract_image_links() #stores links of all images in links list
 	links = refine_links(links)
 	os.remove("source.txt")
 	path = create_directory(comic, issue)
-	# path = path + "/"
 	download_comic(path, links)
-
+	if pdf[0] in ['y', 'Y']:
+		convert_to_pdf(comic, issue)
 main()
