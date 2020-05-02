@@ -66,9 +66,10 @@ def refine_links(links):
 def create_directory(comic, issue):
 	cur_dir = os.getcwd()
 	final_directory = os.path.join(cur_dir, "Comics", comic, issue)
+	pdf_directory = os.path.join(cur_dir, "Comics", comic)
 	if not os.path.exists(final_directory):
 		os.makedirs(final_directory)
-	return final_directory	
+	return final_directory, pdf_directory	
 
 def download_comic(path, links):
 	# print(path)
@@ -83,9 +84,10 @@ def download_comic(path, links):
 def convert_to_pdf(comic, issue):
 	pdf = []
 	files = []
-	cur_dir = os.getcwd()
-	final_dir = os.path.join(cur_dir, "Comics", comic) #to store pdf
-	jpg_directory = os.path.join(cur_dir, "Comics", comic, issue) #where images are stored
+	# cur_dir = os.getcwd()
+	# final_dir = os.path.join(cur_dir, "Comics", comic) #to store pdf
+	# jpg_directory = os.path.join(cur_dir, "Comics", comic, issue) #where images are stored
+	jpg_directory, final_dir = create_directory(comic, issue)
 	for filename in os.listdir(jpg_directory):
 		if filename.endswith(".jpg"):
 			files.append(filename)
@@ -98,21 +100,24 @@ def convert_to_pdf(comic, issue):
 		pdf.append(im)
 	name = comic + "-" + issue + ".pdf" #name of pdf
 	im1.save(final_dir + "/" + name, save_all=True, append_images=pdf)	
-	print("Comic converted to pdf")
 
 def main():
 	#accept link as argument
 	if len(sys.argv) < 2:
 		print("Enter url as argument in the command line")
 		sys.exit()
-	pdf = input('Convert comic from images to .pdf file(y/n): ')	
+	pdf = input('Download comic as a .pdf file(y/n): ')	
 	url, comic, issue = parse_url(sys.argv[1])
 	extract_source_code(url) #stores source code of url in 'source.txt'
 	links = extract_image_links() #stores links of all images in links list
 	links = refine_links(links)
 	os.remove("source.txt")
-	path = create_directory(comic, issue)
+	path, pdf_directory = create_directory(comic, issue)
 	download_comic(path, links)
 	if pdf[0] in ['y', 'Y']:
 		convert_to_pdf(comic, issue)
+		print('The pdf of the comic is present at: ' + pdf_directory)
+	print('The images of the comic are present at: ' + path)
+
+
 main()
