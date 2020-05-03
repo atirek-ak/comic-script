@@ -6,6 +6,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 import sys, os, requests
 from PIL import Image #convert image to pdf
+import shutil
 
 # from datetime import datetime #for testing purpose
 
@@ -21,6 +22,7 @@ def parse_url(url):
 	return url, comic, issue
 
 def extract_source_code(url):
+	print("Firing up Chrome...")
 	#Create an instance of chrome
 	options = webdriver.ChromeOptions();
 	# options.add_argument('headless'); #to not open a browser window
@@ -72,14 +74,16 @@ def create_directory(comic, issue):
 	return final_directory, pdf_directory	
 
 def download_comic(path, links):
+	print("Starting download...")
 	# print(path)
 	count = 1
 	for image in links:
 			r = requests.get(image)
 			with open(path + "/" + str('%03d' % count) + ".jpg", 'wb') as f:
 				f.write(r.content)
-			print("Downloading " + '%03d' % count + ".jpg")
+			print("Downloading " + '%03d' % count)
 			count += 1
+	print("Download complete.")		
 
 def convert_to_pdf(comic, issue):
 	pdf = []
@@ -106,7 +110,10 @@ def main():
 	if len(sys.argv) < 2:
 		print("Enter url as argument in the command line")
 		sys.exit()
-	pdf = input('Download comic as a .pdf file(y/n): ')	
+	print("Input 0 to download comic in .jpg format")	
+	print("Input 1 to download comic in .pdf format")	
+	print("Input 2 to download comic in  both .jpg & .pdf format")	
+	choice = int(input('Input: '))
 	url, comic, issue = parse_url(sys.argv[1])
 	extract_source_code(url) #stores source code of url in 'source.txt'
 	links = extract_image_links() #stores links of all images in links list
@@ -114,10 +121,15 @@ def main():
 	os.remove("source.txt")
 	path, pdf_directory = create_directory(comic, issue)
 	download_comic(path, links)
-	if pdf[0] in ['y', 'Y']:
+	if choice == 0:
+		print('The images of the comic are present at: ' + path)
+	elif choice == 1:
 		convert_to_pdf(comic, issue)
 		print('The pdf of the comic is present at: ' + pdf_directory)
-	print('The images of the comic are present at: ' + path)
-
+		shutil.rmtree(path)
+	elif choice == 2:
+		convert_to_pdf(comic, issue)
+		print('The pdf of the comic is present at: ' + pdf_directory)
+		print('The images of the comic are present at: ' + path)
 
 main()
