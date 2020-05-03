@@ -1,5 +1,5 @@
 # comic-script
-Downloads comics from **https://readcomiconline.to** as .jpg files and converts them to a .pdf file(optional)
+Downloads comics from **https://readcomiconline.to** as .jpg and/or .pdf files
 
 # Features  
 * Downloads comic as .jpg files  
@@ -27,7 +27,11 @@ The 'Comics' folder stores all the comics downloaded. It will be created the fir
 ```
 python selenium-script.py <url>
 ```
-The url entered will be that of the page which displays the comic. After running the above command you will be asked if you wish to download your comic as a .pdf file also.  
+The url entered will be that of the page which displays the comic.   
+After that input a number from 0 to 2 on prompt:  
+0 - to download comic in .jpg format  
+1 - to download comic in .pdf format  
+2 - to download comic in both .jpg & .pdf format  
 
 ## Author  
 Atirek Kumar  
