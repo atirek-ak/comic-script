@@ -2,8 +2,7 @@
 Because you want to enjoy Batman beating up the scum of Gotham in full screen and whenever you wish.  
 
 # Features  
-* Downloads comic as .jpg files  
-* Converts them to a .pdf file(optional)
+* Downloads comic as .jpg & .pdf files(can be chosen).  
 
 ## Modules used  
 * selenium  
