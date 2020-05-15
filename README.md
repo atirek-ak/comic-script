@@ -1,5 +1,5 @@
 # comic-script
-Downloads comics from **https://readcomiconline.to** as .jpg and/or .pdf files
+Because you want to enjoy Batman beating up the scum of Gotham in full screen and whenever you wish.  
 
 # Features  
 * Downloads comic as .jpg files  
