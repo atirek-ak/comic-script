@@ -22,12 +22,6 @@ def parse_url(url):
 	return url, comic, issue
 
 def extract_source_code(url):
-	print("Firing up Chrome...")
-	#Create an instance of chrome
-	options = webdriver.ChromeOptions();
-	# options.add_argument('headless'); #to not open a browser window
-	options.add_argument('--load-images=no'); #to lower loading time
-	browser = webdriver.Chrome(options=options)
 	browser.get(url)
 
 	# Wait 7 seonds for page to load
@@ -44,7 +38,6 @@ def extract_source_code(url):
 	soure_file.write(source_Code)
 	soure_file.flush()
 	soure_file.close()
-	browser.quit()
 
 
 def extract_image_links():
@@ -105,15 +98,11 @@ def convert_to_pdf(comic, issue):
 	name = comic + "-" + issue + ".pdf" #name of pdf
 	im1.save(final_dir + "/" + name, save_all=True, append_images=pdf)	
 
-def main():
+def single_comic():
 	#accept link as argument
 	if len(sys.argv) < 2:
 		print("Enter url as argument in the command line")
 		sys.exit()
-	print("Input 0 to download comic in .jpg format")	
-	print("Input 1 to download comic in .pdf format")	
-	print("Input 2 to download comic in  both .jpg & .pdf format")	
-	choice = int(input('Input: '))
 	url, comic, issue = parse_url(sys.argv[1])
 	extract_source_code(url) #stores source code of url in 'source.txt'
 	links = extract_image_links() #stores links of all images in links list
@@ -121,15 +110,18 @@ def main():
 	os.remove("source.txt")
 	path, pdf_directory = create_directory(comic, issue)
 	download_comic(path, links)
-	if choice == 0:
-		print('The images of the comic are present at: ' + path)
-	elif choice == 1:
-		convert_to_pdf(comic, issue)
-		print('The pdf of the comic is present at: ' + pdf_directory)
-		shutil.rmtree(path)
-	elif choice == 2:
-		convert_to_pdf(comic, issue)
-		print('The pdf of the comic is present at: ' + pdf_directory)
-		print('The images of the comic are present at: ' + path)
+	convert_to_pdf(comic, issue)
+	print('The pdf of the comic is present at: ' + pdf_directory)
+	shutil.rmtree(path)
 
-main()
+
+print("Firing up Chrome...")
+#Create an instance of chrome
+options = webdriver.ChromeOptions();
+# options.add_argument('headless'); #to not open a browser window
+options.add_argument('--load-images=no'); #to lower loading time
+browser = webdriver.Chrome(options=options)
+single_comic()
+browser.quit()
+
+
