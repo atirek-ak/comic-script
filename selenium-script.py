@@ -108,7 +108,7 @@ def single_comic(link):
 	path, pdf_directory = create_directory(comic, issue)
 	download_comic(path, links, issue, comic)
 	convert_to_pdf(comic, issue)
-	print('The pdf of the comic is present at: ' + pdf_directory)
+	print('The comic is at: ' + pdf_directory)
 	shutil.rmtree(path)
 
 def download_issue(comic):
