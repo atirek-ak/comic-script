@@ -2,7 +2,9 @@
 Because you want to enjoy Batman beating up the scum of Gotham in full screen and whenever you wish.  
 
 # Features  
-* Downloads comic as .jpg & .pdf files(can be chosen).  
+* Downloads comic as .pdf file.  
+Ps. - You could also download it as .jpg by cloning the jpg branch.  
+* You can download a single issue or a series.
 
 ## Modules used  
 * selenium  
@@ -17,8 +19,6 @@ The script downloads the comic in the following format:
 ├── Comics
 │   ├── <comic series name>
 │       ├── <comic pdf file>
-│   │   ├── <comic folder containing images>
-│   │   │   ├── 001.jpg
 ```  
 The 'Comics' folder stores all the comics downloaded. It will be created the first time the script is run.  
 
@@ -26,12 +26,9 @@ The 'Comics' folder stores all the comics downloaded. It will be created the fir
 ```
 python selenium-script.py <url>
 ```
-The url entered will be that of the page which displays the comic.   
-After that input a number from 0 to 2 on prompt:  
-0 - to download comic in .jpg format  
-1 - to download comic in .pdf format  
-2 - to download comic in both .jpg & .pdf format  
-
-## Author  
-Atirek Kumar  
-Github handle: atirek-ak
+The url entered will be that of the issue which displays the comic or the page that displays all the issues of a series.   
+Ex.- 
+```
+python selenium-script.py https://readcomiconline.to/Comic/Injustice-Gods-Among-Us-Year-Three
+python selenium-script.py https://readcomiconline.to/Comic/Injustice-Gods-Among-Us-Year-Three/Issue-14?id=15303
+```
