@@ -1,5 +1,5 @@
 # comic-script
-Because you want to enjoy Batman beating up the scum of Gotham in full screen and whenever you wish.  
+To download and read comics at your convenience.
 
 # Features  
 * Downloads comic as .pdf file.  
