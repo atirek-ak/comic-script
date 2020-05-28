@@ -21,7 +21,7 @@ def parse_url(url):
 	# print(issue)
 	return url, comic, issue
 
-def extract_source_code(url):
+def extract_source_code(url, file):
 	browser.get(url)
 
 	# Wait 7 seonds for page to load
@@ -34,7 +34,7 @@ def extract_source_code(url):
 
 	#store source code in a .txt file
 	source_Code = browser.page_source
-	soure_file = open('source.txt','w')
+	soure_file = open(file,'w')
 	soure_file.write(source_Code)
 	soure_file.flush()
 	soure_file.close()
@@ -66,8 +66,8 @@ def create_directory(comic, issue):
 		os.makedirs(final_directory)
 	return final_directory, pdf_directory	
 
-def download_comic(path, links):
-	print("Starting download...")
+def download_comic(path, links, issue, comic):
+	print("Downloading " + comic + " " + issue)
 	# print(path)
 	count = 1
 	for image in links:
@@ -98,22 +98,44 @@ def convert_to_pdf(comic, issue):
 	name = comic + "-" + issue + ".pdf" #name of pdf
 	im1.save(final_dir + "/" + name, save_all=True, append_images=pdf)	
 
-def single_comic():
-	#accept link as argument
-	if len(sys.argv) < 2:
-		print("Enter url as argument in the command line")
-		sys.exit()
-	url, comic, issue = parse_url(sys.argv[1])
-	extract_source_code(url) #stores source code of url in 'source.txt'
+def single_comic(link):
+	
+	url, comic, issue = parse_url(link)
+	extract_source_code(url, "source.txt") #stores source code of url in 'source.txt'
 	links = extract_image_links() #stores links of all images in links list
 	links = refine_links(links)
 	os.remove("source.txt")
 	path, pdf_directory = create_directory(comic, issue)
-	download_comic(path, links)
+	download_comic(path, links, issue, comic)
 	convert_to_pdf(comic, issue)
 	print('The pdf of the comic is present at: ' + pdf_directory)
 	shutil.rmtree(path)
 
+def download_issue(comic):
+	extract_source_code(sys.argv[1], "issue.txt")
+	# comic = 
+	links = []
+	with open("issue.txt", "r") as a_file:
+		for line in a_file:	
+			if comic in line and "?id" in line:
+					links.append(line.split('"')[1])
+	links.reverse()					
+	for link in links:
+		print()
+		single_comic("https://readcomiconline.to/"+link)
+	os.remove("issue.txt")	
+
+
+def	check_url():
+	#accept link as argument
+	if len(sys.argv) < 2:
+		print("Enter url as argument in the command line")
+		sys.exit()
+	link = 	sys.argv[1].split('/')
+	if len(link) == link.index('Comic') + 2 or "id" not in link[link.index('Comic') + 2]:
+		download_issue("Comic/" + link[link.index('Comic') + 1])
+	else:
+		single_comic(sys.argv[1])
 
 print("Firing up Chrome...")
 #Create an instance of chrome
@@ -121,7 +143,7 @@ options = webdriver.ChromeOptions();
 # options.add_argument('headless'); #to not open a browser window
 options.add_argument('--load-images=no'); #to lower loading time
 browser = webdriver.Chrome(options=options)
-single_comic()
+check_url()
 browser.quit()
 
 
