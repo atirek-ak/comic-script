@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.options import Options
 import sys, os, requests
 from PIL import Image #convert image to pdf
 import shutil
+import time
 
 # from datetime import datetime #for testing purpose
 
@@ -75,6 +76,8 @@ def download_comic(path, links, issue, comic):
 			with open(path + "/" + str('%03d' % count) + ".jpg", 'wb') as f:
 				f.write(r.content)
 			print("Downloading " + '%03d' % count)
+			if count>=10 and count%10 == 1:
+				time.sleep(1)
 			count += 1
 	print("Download complete.")		
 
