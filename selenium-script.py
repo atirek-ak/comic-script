@@ -25,8 +25,8 @@ def parse_url(url):
 def extract_source_code(url, file):
 	browser.get(url)
 
-	# Wait 7 seonds for page to load
-	timeout = 7
+	# Wait 15 seonds for page to load
+	timeout = 15
 	try:
 		element = WebDriverWait(browser, timeout).until(EC.presence_of_element_located((By.ID, "containerRoot")))
 	except TimeoutException:
@@ -72,13 +72,13 @@ def download_comic(path, links, issue, comic):
 	# print(path)
 	count = 1
 	for image in links:
-			r = requests.get(image)
-			with open(path + "/" + str('%03d' % count) + ".jpg", 'wb') as f:
-				f.write(r.content)
-			print("Downloading " + '%03d' % count)
-			if count>=10 and count%10 == 1:
-				time.sleep(1)
-			count += 1
+		r = requests.get(image)
+		with open(path + "/" + str('%03d' % count) + ".jpg", 'wb') as f:
+			f.write(r.content)
+		print("Downloading " + '%03d' % count)
+		if count>=10 and count%10 == 1:
+			time.sleep(1)
+		count += 1
 	print("Download complete.")		
 
 def convert_to_pdf(comic, issue):
@@ -102,7 +102,6 @@ def convert_to_pdf(comic, issue):
 	im1.save(final_dir + "/" + name, save_all=True, append_images=pdf)	
 
 def single_comic(link):
-	
 	url, comic, issue = parse_url(link)
 	extract_source_code(url, "source.txt") #stores source code of url in 'source.txt'
 	links = extract_image_links() #stores links of all images in links list
