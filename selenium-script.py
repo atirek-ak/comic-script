@@ -25,8 +25,8 @@ def parse_url(url):
 def extract_source_code(url, file):
 	browser.get(url)
 
-	# Wait 15 seonds for page to load
-	timeout = 15
+	# Wait 60 seonds for page to load
+	timeout = 60
 	try:
 		element = WebDriverWait(browser, timeout).until(EC.presence_of_element_located((By.ID, "containerRoot")))
 	except TimeoutException:
