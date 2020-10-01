@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 import sys, os, requests
-from PIL import Image #convert images to pdf
+from PIL import Image #convert image to pdf
 import shutil
 import time
 
@@ -73,7 +73,6 @@ def download_comic(path, links, issue, comic):
 	count = 1
 	session = requests.session()
 	for image in links:
-		# r = requests.get(image, stream=True)
 		r = session.get(image)
 		with open(path + "/" + str('%03d' % count) + ".jpg", 'wb') as f:
 			f.write(r.content)
@@ -154,5 +153,3 @@ options.add_argument('--load-images=no'); #to lower loading time
 browser = webdriver.Chrome(options=options)
 check_url()
 browser.quit()
-
-
