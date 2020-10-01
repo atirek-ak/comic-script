@@ -71,13 +71,15 @@ def download_comic(path, links, issue, comic):
 	print("Downloading " + comic + " " + issue)
 	# print(path)
 	count = 1
+	session = requests.session()
 	for image in links:
-		r = requests.get(image)
+		# r = requests.get(image, stream=True)
+		r = session.get(image)
 		with open(path + "/" + str('%03d' % count) + ".jpg", 'wb') as f:
 			f.write(r.content)
 		print("Downloading " + '%03d' % count)
-		if count>=10 and count%10 == 1:
-			time.sleep(1)
+		# if count>=10 and count%10 == 1:
+			# time.sleep(1)
 		count += 1
 	print("Download complete.")		
 
@@ -129,7 +131,7 @@ def download_issue(comic):
 			# continue
 		print()
 		single_comic("https://readcomiconline.to/"+link)
-		time.sleep(1)
+		# time.sleep(1)
 	os.remove("issue.txt")	
 
 
