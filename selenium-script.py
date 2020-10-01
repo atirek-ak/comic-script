@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 import sys, os, requests
-from PIL import Image #convert image to pdf
+from PIL import Image #convert images to pdf
 import shutil
 import time
 
