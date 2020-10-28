@@ -104,11 +104,16 @@ def convert_to_pdf(comic, issue):
 
 def single_comic(link):
 	url, comic, issue = parse_url(link)
+	path, pdf_directory = create_directory(comic, issue)
+	name = comic + "-" + issue + ".pdf" #in case comic exists
+	# print(pdf_directory + "/" + name)
+	if os.path.isfile(pdf_directory + "/" + name):
+		print(name + " already exists")
+		return
 	extract_source_code(url, "source.txt") #stores source code of url in 'source.txt'
 	links = extract_image_links() #stores links of all images in links list
 	links = refine_links(links)
 	os.remove("source.txt")
-	path, pdf_directory = create_directory(comic, issue)
 	download_comic(path, links, issue, comic)
 	convert_to_pdf(comic, issue)
 	print('The comic is at: ' + pdf_directory)
