@@ -65,7 +65,12 @@ def create_directory(comic, issue):
 	pdf_directory = os.path.join(cur_dir, "Comics", comic)
 	if not os.path.exists(final_directory):
 		os.makedirs(final_directory)
-	return final_directory, pdf_directory	
+	return final_directory, pdf_directory
+
+def delete_directory(comic, issue):
+	cur_dir = os.getcwd()
+	final_directory = os.path.join(cur_dir, "Comics", comic, issue)
+	os.rmdir(final_directory)
 
 def download_comic(path, links, issue, comic):
 	print("Downloading " + comic + " " + issue)
@@ -108,6 +113,7 @@ def single_comic(link):
 	name = comic + "-" + issue + ".pdf" #in case comic exists
 	# print(pdf_directory + "/" + name)
 	if os.path.isfile(pdf_directory + "/" + name):
+		delete_directory(comic, issue)
 		print(name + " already exists")
 		return
 	extract_source_code(url, "source.txt") #stores source code of url in 'source.txt'
