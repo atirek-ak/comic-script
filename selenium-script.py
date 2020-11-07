@@ -142,7 +142,8 @@ def download_issue(comic):
 		print()
 		single_comic("https://readcomiconline.to/"+link)
 		# time.sleep(1)
-	os.remove("issue.txt")	
+	if os.path.isfile("issue.txt"):
+		os.remove("issue.txt")	
 
 
 def	check_url():
