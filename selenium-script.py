@@ -133,7 +133,7 @@ def download_issue(comic):
 		for line in a_file:	
 			if comic in line and "?id" in line:
 					links.append(line.split('"')[1])
-	# links.reverse()
+	links.sort()
 	num=0				
 	for link in links:
 		# num+=1
