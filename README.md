@@ -1,5 +1,6 @@
 # comic-script
-To download and read comics at your convenience.
+To download and read comics at your convenience.  
+Note: Since the PIL module is not supported after python 3.7, create a virtual environment and set the python version as 3.7  
 
 # Features  
 * Downloads comic as .pdf file.  
