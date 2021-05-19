@@ -137,8 +137,12 @@ comic-script
 #selenium
 ghostdriver.log
 
-#testing
-*.txt
-
 #comics stored here
 Comics/
+
+#virtualenv python
+python*
+
+#pipfiles
+Pipfile
+Pipfile.lock
